@@ -19,12 +19,23 @@ import json
 
 
 
-# Load the JSON credentials from the Streamlit secret
-service_account_info = json.loads(st.secrets['GOOGLE_SERVICE_ACCOUNT_CREDENTIALS'])
-
 # Set up the credentials and authorize the application
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = service_account.Credentials.from_service_account_info(service_account_info, scopes=scope)
+creds = service_account.Credentials.from_service_account_info(
+    {
+        "type": st.secrets["type"],
+        "project_id": st.secrets["project_id"],
+        "private_key_id": st.secrets["private_key_id"],
+        "private_key": st.secrets["private_key"],
+        "client_email": st.secrets["client_email"],
+        "client_id": st.secrets["client_id"],
+        "auth_uri": st.secrets["auth_uri"],
+        "token_uri": st.secrets["token_uri"],
+        "auth_provider_x509_cert_url": st.secrets["auth_provider_x509_cert_url"],
+        "client_x509_cert_url": st.secrets["client_x509_cert_url"],
+    },
+    scopes=scope,
+)
 client = gspread.authorize(creds)
 
 
